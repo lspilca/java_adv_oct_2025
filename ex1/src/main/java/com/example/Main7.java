@@ -8,7 +8,6 @@ public class Main7 {
 
         Object obj = new Book("Title", "12234");
 
-
         switch (obj) {
             case Book(String title, _) -> System.out.println(title);
 //            case Book(_, String isbn) ->  System.out.println(isbn);
