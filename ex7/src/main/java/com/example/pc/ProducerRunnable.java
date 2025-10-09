@@ -1,8 +1,12 @@
 package com.example.pc;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class ProducerRunnable implements Runnable {
+
+    private List<RandomValueProducedListener> listeners = new ArrayList<>();
 
     @Override
     public void run() {
@@ -12,8 +16,8 @@ public class ProducerRunnable implements Runnable {
                 synchronized (Container.container) {
                     if (Container.container.size() < 100) {
                         int randomNumber = rand.nextInt(10000);
-                        System.out.println("Generated value " + randomNumber);
                         Container.container.add(randomNumber);
+                        notifyRandomValueProducedListener(new  NumberGeneratedEvent(randomNumber));
                         Container.container.notifyAll();
                     } else {
                         Container.container.wait();
@@ -22,4 +26,17 @@ public class ProducerRunnable implements Runnable {
             }
         } catch (InterruptedException e) {}
     }
+
+    private void notifyRandomValueProducedListener(NumberGeneratedEvent event) {
+        listeners.forEach(l -> l.randomNumberGenerated(event));
+    }
+
+    public void addRandomValueProducedListener(RandomValueProducedListener listener) {
+        listeners.add(listener);
+    }
+
+    public void removeRandomValueProducedListener(RandomValueProducedListener listener) {
+        listeners.remove(listener);
+    }
+
 }

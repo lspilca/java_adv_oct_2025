@@ -17,15 +17,28 @@ public class Main {
                 .name("C3")
                 .start(new ConsumerRunnable());
 
+        RandomValueProducedListener randomValueProducedListener = (e) -> {
+            System.out.println("Event observed " + e);
+        };
+
+        ProducerRunnable p1 = new ProducerRunnable();
+        p1.addRandomValueProducedListener(randomValueProducedListener);
+
+        ProducerRunnable p2 = new ProducerRunnable();
+        p2.addRandomValueProducedListener(randomValueProducedListener);
+
+        ProducerRunnable p3 = new ProducerRunnable();
+        p2.addRandomValueProducedListener(randomValueProducedListener);
+
         Thread.ofPlatform()
                 .name("P1")
-                .start(new ProducerRunnable());
+                .start(p1);
         Thread.ofPlatform()
                 .name("P2")
-                .start(new ProducerRunnable());
+                .start(p2);
         Thread.ofPlatform()
                 .name("P3")
-                .start(new ProducerRunnable());
+                .start(p3);
 
 
         // Race condition, Deadlocks, Livelocks, Starvation

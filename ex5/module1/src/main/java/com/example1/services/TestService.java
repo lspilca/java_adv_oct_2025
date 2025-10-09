@@ -1,6 +1,6 @@
-package com.example.services;
+package com.example1.services;
 
-import com.example.services.impl.TestServiceImpl;
+import com.example1.services.impl.TestServiceImpl;
 
 public sealed interface TestService permits TestServiceImpl{
 
